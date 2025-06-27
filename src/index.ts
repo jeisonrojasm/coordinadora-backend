@@ -1,13 +1,7 @@
-// src/index.ts
-import express from 'express';
+import app from './app'
 
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-app.get('/', (_, res) => {
-  res.send('Hello from Dockerized Express + TS!');
-});
+const PORT = process.env.PORT || 3000
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
-});
+  console.log(`🚀 Server running on http://localhost:${PORT}`)
+})
