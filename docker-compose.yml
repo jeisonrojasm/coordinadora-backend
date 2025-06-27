@@ -11,4 +11,27 @@ services:
       - "3000:3000"
     environment:
       - PORT=3000
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=coordinadora
+      - DB_PASSWORD=Pass123*
+      - DB_NAME=coordinadora_db
+    depends_on:
+      - postgres
     command: npm run dev
+  
+  postgres:
+    image: postgres:15-alpine
+    container_name: coordinadora-db
+    restart: always
+    environment:
+      POSTGRES_USER: coordinadora
+      POSTGRES_PASSWORD: Pass123*
+      POSTGRES_DB: coordinadora_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
