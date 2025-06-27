@@ -10,12 +10,12 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - PORT=3000
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_USER=coordinadora
-      - DB_PASSWORD=Pass123*
-      - DB_NAME=coordinadora_db
+      - PORT=${PORT}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
     depends_on:
       - postgres
     command: npm run dev
@@ -25,13 +25,25 @@ services:
     container_name: coordinadora-db
     restart: always
     environment:
-      POSTGRES_USER: coordinadora
-      POSTGRES_PASSWORD: Pass123*
-      POSTGRES_DB: coordinadora_db
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: coordinadora-pgadmin
+    restart: always
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - "8080:80"
+    depends_on:
+      - postgres
 
 volumes:
   pgdata:
