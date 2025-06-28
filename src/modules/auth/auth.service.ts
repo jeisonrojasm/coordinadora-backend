@@ -1,7 +1,8 @@
-import { hashPasswordWithBcrypt } from '../../utils/bcrypt'
+import { comparePasswordsWithBcrypt, hashPasswordWithBcrypt } from '../../utils/bcrypt'
 import { ApiException } from '../../utils/exceptions/ApiException'
+import { generateToken } from '../../utils/jwt'
 import { createUserRepository, findOneByEmailRepository } from './auth.repository'
-import { RegisterUserDto } from './auth.validation'
+import { LoginUserDto, RegisterUserDto } from './auth.validation'
 
 export const registerUserService = async (data: RegisterUserDto) => {
   const email = data.email.toLowerCase()
@@ -12,4 +13,29 @@ export const registerUserService = async (data: RegisterUserDto) => {
 
   const userCreated = await createUserRepository({ ...data, email, password: hashedPassword })
   return { success: true, body: userCreated }
+}
+
+export const loginUserService = async (data: LoginUserDto) => {
+  const email = data.email.toLowerCase()
+  const user = await findOneByEmailRepository(email)
+
+  if (!user) throw new ApiException('WRONG_CREDENTIALS', 401)
+
+  const isPasswordMatch = comparePasswordsWithBcrypt(data.password, user.password_hash)
+  if (!isPasswordMatch) throw new ApiException('WRONG_CREDENTIALS', 401)
+
+  const token = generateToken({ userId: user.user_id, email: user.email })
+
+  return {
+    success: true,
+    body: {
+      token,
+      user: {
+        userId: user.user_id,
+        name: user.name,
+        lastname: user.lastname,
+        email: user.email
+      }
+    }
+  }
 }
