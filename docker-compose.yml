@@ -45,5 +45,16 @@ services:
     depends_on:
       - postgres
 
+  dbmate:
+    image: amacneil/dbmate:1.16.0
+    container_name: coordinadora-dbmigrate
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_URL=postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=disable
+    volumes:
+      - ./db/migrations:/db/migrations
+    entrypoint: dbmate --wait --migrations-dir=/db/migrations up
+
 volumes:
   pgdata:
