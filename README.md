@@ -1,6 +1,7 @@
 <p align="center">
   <img src="https://coordinadora.com/wp-content/uploads/2023/03/logo-coordinadora.svg" width="500" alt="Coordinadora logo" />
 </p>
+
 # Coordinadora Backend
 
 API RESTful para la gestión de cotizaciones y envíos en tiempo real.
@@ -14,6 +15,8 @@ API RESTful para la gestión de cotizaciones y envíos en tiempo real.
 - JWT para autenticación
 - Swagger para documentación
 - Docker
+- Zod
+- Jest
 
 ## ✅ Prerrequisitos
 
@@ -30,6 +33,46 @@ Clona el repositorio:
 #Clona el repositorio
 git clone https://github.com/jeisonrojasm/coordinadora-backend.git
 cd coordinadora-backend
+```
+
+## 📁 Estructura del Proyecto
+
+La estructura del proyecto está organizada para mantener una clara separación de responsabilidades, facilitando el mantenimiento y la escalabilidad.
+
+```bash
+coordinadora-backend/
+├── db/                     # Archivos de migración SQL (usados por dbmate)
+│   └── migrations/         # Migraciones con timestamp
+├── src/                    # Código fuente de la aplicación
+│   ├── config/             # Configuraciones generales (Redis, DB, dotenv)
+│   ├── middlewares/        # Middlewares personalizados (auth, validaciones, manejo de errores)
+│   ├── modules/            # Módulos principales divididos por dominio
+│   │   ├── auth/           # Registro e inicio de sesión
+│   │   ├── quote/          # Cotización de envíos
+│   │   ├── shipment/       # Creación y seguimiento de envíos
+│   │   └── ...             # Otros módulos futuros
+│   └── utils/              # Utilidades usadas a lo largo de toda la app
+├── .env                    # Variables de entorno (no versionado)
+├── .gitignore              # Excluye archivos o carpetas que no deben subirse al repositorio
+├── docker-compose.yml      # Orquestación de servicios con Docker
+├── Dockerfile              # Imagen de backend con Node.js
+├── package.json            # Dependencias y scripts
+├── README.md               # Documentación del proyecto
+└── tsconfig.json           # Configuración de TypeScript
+```
+
+### Estructura Modular
+
+Cada módulo dentro de `src/modules` sigue el siguiente patrón:
+
+```bash
+module/
+├── module.controller.ts    # Controlador HTTP
+├── module.repository.ts    # Consultas a base de datos
+├── module.routes.ts        # Endpoints del módulo
+├── module.service.spec.ts  # Pruebas unitarias del módulo
+├── module.service.ts       # Lógica de negocio
+├── module.validation.ts    # Validaciones con Zod
 ```
 
 ## 🚀 Ejecutar
@@ -134,3 +177,78 @@ docker-compose up --build
 ```
 
 Tendrá automáticamente la base de datos con todas las tablas necesarias sin necesidad de configuraciones adicionales.
+
+## ✅ Aplicación lista para usarse
+
+Una vez completados los pasos anteriores:
+
+- El servidor backend estará corriendo en `http://localhost:3000`.
+- La base de datos PostgreSQL estará lista y migrada.
+- Podrás consumir los endpoints REST definidos.
+- Tendrás acceso a pgAdmin para gestionar tus datos gráficamente.
+- Redis estará disponible para almacenamiento en caché.
+- Y la documentación interactiva estará disponible en Swagger (si ya configuraste el endpoint `/api-docs`).
+
+> 🧪 Puedes ahora probar los endpoints usando **Postman** o cualquier cliente HTTP como **Insomnia**, y empezar a construir el frontend o integraciones que necesites.
+
+## 📚 Documentación con Swagger
+
+Esta API cuenta con documentación interactiva generada automáticamente con Swagger gracias a la integración con `swagger-jsdoc` y `swagger-ui-express`.
+
+### ¿Qué puedes hacer desde Swagger?
+
+- Ver todos los endpoints disponibles (GET, POST, PATCH, etc.)
+- Consultar ejemplos de request y response.
+- Ver los esquemas de validación definidos con Zod.
+- Probar los endpoints directamente desde el navegador (requiere autenticación con JWT en los endpoints protegidos)..
+
+### Acceder a la documentación
+
+Una vez que el backend esté corriendo, puedes acceder a Swagger en:
+
+```bash
+http://localhost:3000/api-docs
+```
+
+### Autenticación con JWT en Swagger
+
+1. Primero, haz una solicitud de login con un usuario válido para obtener un token.
+2. En Swagger, haz clic en el botón **Authorize** (🔒) ubicado en la parte superior derecha.
+3. Ingresa el token.
+4. Una vez autenticado, podrás probar todos los endpoints protegidos sin necesidad de usar Postman o herramientas externas.
+
+## 🧪 Pruebas automatizadas
+
+Este proyecto incluye un conjunto de pruebas unitarias escritas con [Jest](https://jestjs.io/) para asegurar el correcto funcionamiento de los servicios y controladores principales.
+
+### Estructura de pruebas
+
+Las pruebas están organizadas siguiendo la misma estructura que los módulos de negocio:
+
+```bash
+src/
+├── modules/
+│   ├── auth/
+│   │   ├── auth.service.ts
+│   │   ├── auth.service.spec.ts   👈 Pruebas del módulo de autenticación
+│   ├── quote/
+│   │   ├── quote.service.ts
+│   │   ├── quote.service.spec.ts  👈 Pruebas del cálculo de cotizaciones
+│   ├── shipment/
+│   │   ├── shipment.service.ts
+│   │   ├── shipment.service.spec.ts 👈 Pruebas del registro de envíos
+```
+
+Cada archivo `*.spec.ts` contiene pruebas para el servicio correspondiente, simulando dependencias con `jest.mock()` y `jest.spyOn()`.
+
+### Ejecutar los tests
+
+Puedes ejecutar todos los tests con:
+
+```bash
+npm run test
+```
+
+## 👨‍💻 Autor
+
+Desarrollado por **Jeison Rojas** - *Desarrollador Fullstack* - [jeisonrojasm](https://github.com/jeisonrojasm)
