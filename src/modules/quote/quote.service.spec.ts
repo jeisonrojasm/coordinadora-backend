@@ -23,6 +23,11 @@ describe('calculateQuoteService', () => {
     jest.clearAllMocks()
   })
 
+  beforeEach(async () => {
+    await redis.flushall() // borra todas las claves de Redis para tests consistentes
+    jest.clearAllMocks()
+  })
+
   it('debe lanzar ApiException si no se encuentra tarifa', async () => {
     jest.spyOn(quoteRepository, 'findOneByRouteAndWeight').mockResolvedValueOnce(null)
 
