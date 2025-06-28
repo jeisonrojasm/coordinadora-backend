@@ -4,6 +4,7 @@ import { pool } from './config/database'
 import { errorHandler } from './middlewares/errorHandler'
 import authRouter from './modules/auth/auth.routes'
 import { ApiException } from './utils/exceptions/ApiException'
+import { swaggerUiMiddleware, swaggerUiSetup } from './config/swagger'
 
 dotenv.config()
 
@@ -20,6 +21,9 @@ app.get('/', async (_req: Request, res: Response, next: NextFunction) => {
     next(new ApiException('DATABASE_SERVICE_NOT_AVAILABLE', 500))
   }
 })
+
+// Documentación Swagger
+app.use('/api-docs', swaggerUiMiddleware, swaggerUiSetup)
 
 // Rutas por módulo
 app.use('/auth', authRouter)
