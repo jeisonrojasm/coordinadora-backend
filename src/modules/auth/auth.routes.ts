@@ -126,6 +126,31 @@ authRouter.post(
  *                           example: jeison@example.com
  *       401:
  *         description: Credenciales incorrectas
+ *       429:
+ *         description: Se superó la máxima cantidad de intentos de inicio de sesión fallidos
+  *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 body:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: TOO_MANY_LOGIN_ATTEMPTS
+ *                     statusCode:
+ *                       type: number
+ *                       example: 429
+ *                     path:
+ *                       type: string
+ *                       example: /auth/login
+ *                     timestamp:
+ *                       type: string
+ *                       example: 2025-06-28T18:03:13.834Z
  */
 authRouter.post(
   '/login',
