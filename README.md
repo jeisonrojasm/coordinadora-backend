@@ -32,7 +32,7 @@ git clone https://github.com/jeisonrojasm/coordinadora-backend.git
 cd coordinadora-backend
 ```
 
-## Ejecutar
+## 🚀 Ejecutar
 
 ### 1. **Archivo `.env` requerido**
 
@@ -102,3 +102,35 @@ Para acceder a pgAdmin y visualizar la base de datos:
 5. Haz clic en **Save** para guardar la configuración y conectar.
 
    Una vez creada la conexión, podrás navegar por las bases de datos, ver tablas, ejecutar queries y gestionar los datos desde la interfaz de pgAdmin.
+
+### 4. Migraciones automáticas de la base de datos
+
+Este proyecto utiliza **dbmate** como herramienta para gestionar migraciones de base de datos utilizando SQL puro, lo cual cumple con el requerimiento explícito de evitar ORMs.
+
+🛠️ ¿Qué significa esto?
+
+- No necesitas conectarte a pgAdmin ni crear las tablas manualmente.
+- Al levantar los contenedores con Docker, las tablas necesarias se crean automáticamente en la base de datos PostgreSQL si no existen aún.
+
+📦 ¿Cómo funciona?
+
+- El archivo `docker-compose.yml` define un servicio adicional llamado `dbmate`, que se encarga de aplicar las migraciones una vez que PostgreSQL está listo.
+- Este servicio utiliza la herramienta `dbmate` para buscar y aplicar todos los archivos `.sql` de migración ubicados en:
+
+```bash
+./db/migrations/
+```
+
+Cada archivo de migración tiene un nombre con marca de tiempo para garantizar el orden de ejecución, por ejemplo:
+
+```bash
+20240627150000_create_users_table.sql
+```
+
+Esto garantiza que cualquier persona que clone el proyecto y ejecute:
+
+```bash
+docker-compose up --build
+```
+
+Tendrá automáticamente la base de datos con todas las tablas necesarias sin necesidad de configuraciones adicionales.
