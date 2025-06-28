@@ -18,6 +18,7 @@ services:
       - DB_NAME=${DB_NAME}
     depends_on:
       - postgres
+      - redis
     command: npm run dev
   
   postgres:
@@ -55,6 +56,13 @@ services:
     volumes:
       - ./db/migrations:/db/migrations
     entrypoint: dbmate --wait --migrations-dir=/db/migrations up
+
+  redis:
+    image: redis:7
+    container_name: coordinadora-redis
+    restart: always
+    ports:
+      - "6379:6379"
 
 volumes:
   pgdata:
