@@ -10,6 +10,20 @@ const options: swaggerJsdoc.Options = {
       version: '1.0.0',
       description: 'Documentación de endpoints con Swagger',
     },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
   },
   apis: [path.resolve(__dirname, '../modules/**/*.ts')],
 }
