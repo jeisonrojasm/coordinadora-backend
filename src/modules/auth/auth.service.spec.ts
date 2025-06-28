@@ -3,10 +3,15 @@ import * as authRepository from './auth.repository'
 import * as bcryptUtils from '../../utils/bcrypt'
 import * as jwtUtils from '../../utils/jwt'
 import { ApiException } from '../../utils/exceptions/ApiException'
+import redis from '../../config/redis'
 
 jest.mock('./auth.repository')
 jest.mock('../../utils/bcrypt')
 jest.mock('../../utils/jwt')
+
+afterAll(async () => {
+  await redis.quit()
+})
 
 describe('registerUserService', () => {
   const testUser = {

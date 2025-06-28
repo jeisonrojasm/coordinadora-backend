@@ -5,6 +5,7 @@ import { errorHandler } from './middlewares/errorHandler'
 import authRouter from './modules/auth/auth.routes'
 import { ApiException } from './utils/exceptions/ApiException'
 import { swaggerUiMiddleware, swaggerUiSetup } from './config/swagger'
+import quoteRouter from './modules/quote/quote.routes'
 
 dotenv.config()
 
@@ -27,6 +28,7 @@ app.use('/api-docs', swaggerUiMiddleware, swaggerUiSetup)
 
 // Rutas por módulo
 app.use('/auth', authRouter)
+app.use('/quote', quoteRouter)
 
 // Middleware de errores global
 app.use(errorHandler)
