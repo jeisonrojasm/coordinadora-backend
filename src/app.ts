@@ -1,11 +1,12 @@
 import dotenv from 'dotenv'
 import express, { NextFunction, Request, Response } from 'express'
 import { pool } from './config/database'
+import { swaggerUiMiddleware, swaggerUiSetup } from './config/swagger'
 import { errorHandler } from './middlewares/errorHandler'
 import authRouter from './modules/auth/auth.routes'
-import { ApiException } from './utils/exceptions/ApiException'
-import { swaggerUiMiddleware, swaggerUiSetup } from './config/swagger'
 import quoteRouter from './modules/quote/quote.routes'
+import shipmentRouter from './modules/shipment/shipment.routes'
+import { ApiException } from './utils/exceptions/ApiException'
 
 dotenv.config()
 
@@ -29,6 +30,7 @@ app.use('/api-docs', swaggerUiMiddleware, swaggerUiSetup)
 // Rutas por módulo
 app.use('/auth', authRouter)
 app.use('/quote', quoteRouter)
+app.use('/shipment', shipmentRouter)
 
 // Middleware de errores global
 app.use(errorHandler)
