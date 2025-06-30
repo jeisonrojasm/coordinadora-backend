@@ -8,6 +8,7 @@ import authRouter from './modules/auth/auth.routes'
 import quoteRouter from './modules/quote/quote.routes'
 import shipmentRouter from './modules/shipment/shipment.routes'
 import { ApiException } from './utils/exceptions/ApiException'
+import cityRouter from './modules/city/city.routes'
 
 dotenv.config()
 
@@ -38,6 +39,7 @@ app.use('/api-docs', swaggerUiMiddleware, swaggerUiSetup)
 app.use('/auth', authRouter)
 app.use('/quote', quoteRouter)
 app.use('/shipment', shipmentRouter)
+app.use('/city', cityRouter)
 
 // Middleware de errores global
 app.use(errorHandler)
