@@ -1,13 +1,13 @@
-// src/index.ts
-import express from 'express';
+import http from 'http'
+import app from './app'
+import { initSocketServer } from './config/socket'
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000
 
-app.get('/', (_, res) => {
-  res.send('Hello from Dockerized Express + TS!');
-});
+const server = http.createServer(app)
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
-});
+initSocketServer(server)
+
+server.listen(PORT, () => {
+  console.log(`🚀 Servidor iniciado en http://localhost:${PORT}`)
+})
