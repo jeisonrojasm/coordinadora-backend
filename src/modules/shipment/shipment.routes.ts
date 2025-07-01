@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { authMiddleware } from '../../middlewares/authMiddleware'
 import { validateRequest } from '../../middlewares/validateRequest'
-import { createShipmentController } from './shipment.controller'
+import { createShipmentController, getUserShipmentsController } from './shipment.controller'
 import { CreateShipmentSchema } from './shipment.validation'
 
 const shipmentRouter = Router()
@@ -117,6 +117,94 @@ shipmentRouter.post(
   authMiddleware,
   validateRequest(CreateShipmentSchema),
   createShipmentController
+)
+
+/**
+ * @swagger
+ * /shipment/findAll/user/{userId}:
+ *   get:
+ *     summary: Obtener todos los envíos de un usuario
+ *     tags: [Shipment]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: ID del usuario cuyos envíos se quieren consultar
+ *     responses:
+ *       200:
+ *         description: Lista de envíos del usuario
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 body:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       shipment_id:
+ *                         type: string
+ *                         format: uuid
+ *                         example: "ff666369-ee16-4332-a454-5e108dff0bea"
+ *                       user_id:
+ *                         type: string
+ *                         format: uuid
+ *                       weight:
+ *                         type: string
+ *                         example: "150"
+ *                       height:
+ *                         type: string
+ *                         example: "152"
+ *                       width:
+ *                         type: string
+ *                         example: "154"
+ *                       length:
+ *                         type: string
+ *                         example: "165"
+ *                       price:
+ *                         type: string
+ *                         example: "79000"
+ *                       created_at:
+ *                         type: string
+ *                         format: date-time
+ *                       updated_at:
+ *                         type: string
+ *                         format: date-time
+ *                       origin_name:
+ *                         type: string
+ *                         example: "Bogotá"
+ *                       destination_name:
+ *                         type: string
+ *                         example: "Medellín"
+ *                       status_id:
+ *                         type: integer
+ *                         example: 1
+ *                       status_name:
+ *                         type: string
+ *                         example: "En espera"
+ *                       changed_at:
+ *                         type: string
+ *                         format: date-time
+ *       401:
+ *         description: Token no válido o no proporcionado
+ *       404:
+ *         description: Usuario no encontrado o sin envíos
+ *       500:
+ *         description: Error interno del servidor
+ */
+shipmentRouter.get(
+  '/findAll/user/:userId',
+  authMiddleware,
+  getUserShipmentsController
 )
 
 export default shipmentRouter
