@@ -6,7 +6,7 @@ const redis = new Redis({
 })
 
 redis.on('connect', () => {
-  console.log('✅ Redis connected')
+  console.log('✅ Redis conectado')
 })
 
 redis.on('error', (err) => {

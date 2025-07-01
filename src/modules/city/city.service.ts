@@ -5,7 +5,7 @@ export const getAllCitiesService = async () => {
 
   return {
     success: true,
-    body: cities.map(city => ({
+    body: cities.map((city: { city_id: any; city_name: any }) => ({
       cityId: city.city_id,
       cityName: city.city_name
     }))

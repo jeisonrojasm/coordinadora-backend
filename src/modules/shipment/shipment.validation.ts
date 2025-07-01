@@ -27,4 +27,3 @@ export const UpdateShipmentStatusSchema = z.object({
 
 export type CreateShipmentDto = z.infer<typeof CreateShipmentSchema>
 export type UpdateShipmentStatusDto = z.infer<typeof UpdateShipmentStatusSchema>
-

@@ -1,7 +1,7 @@
-import { calculateQuoteService } from './quote.service'
-import * as quoteRepository from './quote.repository'
-import { ApiException } from '../../utils/exceptions/ApiException'
 import redis from '../../config/redis'
+import { ApiException } from '../../utils/exceptions/ApiException'
+import * as quoteRepository from './quote.repository'
+import { calculateQuoteService } from './quote.service'
 
 jest.mock('./quote.repository')
 

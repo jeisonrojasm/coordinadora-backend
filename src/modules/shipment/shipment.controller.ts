@@ -1,7 +1,6 @@
 import { NextFunction, Response } from 'express'
 import { AuthRequest } from '../../middlewares/authMiddleware'
 import { createShipmentService, getUserShipmentsService, updateShipmentStatusService } from './shipment.service'
-import { getShipmentsByUserRepository } from './shipment.repository'
 
 export const createShipmentController = async (
   req: AuthRequest,

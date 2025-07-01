@@ -1,4 +1,3 @@
-import { pool } from '../../config/database'
 import { getIO } from '../../config/socket'
 import { ApiException } from '../../utils/exceptions/ApiException'
 import {
