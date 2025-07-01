@@ -1,5 +1,5 @@
-import { getAllStatusService } from './status.service'
 import * as statusRepository from './status.repository'
+import { getAllStatusService } from './status.service'
 
 describe('getAllStatusService', () => {
   afterEach(() => {

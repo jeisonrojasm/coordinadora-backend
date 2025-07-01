@@ -1,5 +1,5 @@
-import { getAllCitiesService } from './city.service'
 import * as cityRepository from './city.repository'
+import { getAllCitiesService } from './city.service'
 
 describe('getAllCitiesService', () => {
   afterEach(() => {

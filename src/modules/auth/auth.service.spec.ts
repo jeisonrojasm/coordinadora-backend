@@ -1,9 +1,9 @@
-import { loginUserService, registerUserService } from './auth.service'
-import * as authRepository from './auth.repository'
-import * as bcryptUtils from '../../utils/bcrypt'
-import * as jwtUtils from '../../utils/jwt'
-import { ApiException } from '../../utils/exceptions/ApiException'
 import redis from '../../config/redis'
+import * as bcryptUtils from '../../utils/bcrypt'
+import { ApiException } from '../../utils/exceptions/ApiException'
+import * as jwtUtils from '../../utils/jwt'
+import * as authRepository from './auth.repository'
+import { loginUserService, registerUserService } from './auth.service'
 
 jest.mock('./auth.repository')
 jest.mock('../../utils/bcrypt')

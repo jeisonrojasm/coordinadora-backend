@@ -1,7 +1,7 @@
-import { CreateShipmentDto } from './shipment.validation'
+import redis from '../../config/redis'
 import * as shipmentRepository from './shipment.repository'
 import { createShipmentService, getUserShipmentsService } from './shipment.service'
-import redis from '../../config/redis'
+import { CreateShipmentDto } from './shipment.validation'
 
 jest.mock('./shipment.repository')
 
