@@ -1,6 +1,6 @@
 import { CreateShipmentDto } from './shipment.validation'
 import * as shipmentRepository from './shipment.repository'
-import { createShipmentService } from './shipment.service'
+import { createShipmentService, getUserShipmentsService } from './shipment.service'
 import redis from '../../config/redis'
 
 jest.mock('./shipment.repository')
@@ -51,5 +51,54 @@ describe('createShipmentService', () => {
     expect(statusHistorySpy).toHaveBeenCalledWith(fakeShipmentResponse.shipment_id, 1)
     expect(result.success).toBe(true)
     expect(result.body).toEqual(fakeShipmentResponse)
+  })
+})
+
+describe('getUserShipmentsService', () => {
+  const userId = 'ff666369-ee16-4332-a454-5e108dff0bea'
+
+  const fakeShipments = [
+    {
+      shipment_id: 'ff666369-ee16-4332-a454-5e108dff0bea',
+      user_id: userId,
+      weight: '150',
+      height: '152',
+      width: '154',
+      length: '165',
+      price: '79000',
+      created_at: '2025-07-01T03:00:58.349Z',
+      updated_at: '2025-07-01T03:00:58.349Z',
+      origin_name: 'Bogotá',
+      destination_name: 'Medellín',
+      status_id: 1,
+      status_name: 'En espera',
+      changed_at: '2025-07-01T03:00:58.356Z'
+    }
+  ]
+
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it('debe retornar los envíos del usuario', async () => {
+    jest
+      .spyOn(shipmentRepository, 'getShipmentsByUserRepository')
+      .mockResolvedValueOnce(fakeShipments)
+
+    const result = await getUserShipmentsService(userId)
+
+    expect(shipmentRepository.getShipmentsByUserRepository).toHaveBeenCalledWith(userId)
+    expect(result).toEqual(fakeShipments)
+  })
+
+  it('debe retornar un array vacío si el usuario no tiene envíos', async () => {
+    jest
+      .spyOn(shipmentRepository, 'getShipmentsByUserRepository')
+      .mockResolvedValueOnce([])
+
+    const result = await getUserShipmentsService(userId)
+
+    expect(shipmentRepository.getShipmentsByUserRepository).toHaveBeenCalledWith(userId)
+    expect(result).toEqual([])
   })
 })
