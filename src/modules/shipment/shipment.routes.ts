@@ -1,8 +1,12 @@
 import { Router } from 'express'
 import { authMiddleware } from '../../middlewares/authMiddleware'
 import { validateRequest } from '../../middlewares/validateRequest'
-import { createShipmentController, getUserShipmentsController } from './shipment.controller'
-import { CreateShipmentSchema } from './shipment.validation'
+import {
+  createShipmentController,
+  getUserShipmentsController,
+  updateShipmentStatusController,
+} from './shipment.controller'
+import { CreateShipmentSchema, UpdateShipmentStatusSchema } from './shipment.validation'
 
 const shipmentRouter = Router()
 
@@ -205,6 +209,61 @@ shipmentRouter.get(
   '/findAll/user/:userId',
   authMiddleware,
   getUserShipmentsController
+)
+
+/**
+ * @swagger
+ * /shipment/status:
+ *   patch:
+ *     summary: Actualizar el estado de un envío
+ *     tags: [Shipment]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - shipmentId
+ *               - statusId
+ *             properties:
+ *               shipmentId:
+ *                 type: string
+ *                 format: uuid
+ *                 example: "ff666369-ee16-4332-a454-5e108dff0bea"
+ *                 description: ID del envío que se desea actualizar
+ *               statusId:
+ *                 type: integer
+ *                 example: 2
+ *                 enum: [1, 2, 3]
+ *                 description: ID del nuevo estado (1 = En espera, 2 = En tránsito, 3 = Entregado)
+ *     responses:
+ *       201:
+ *         description: Estado actualizado correctamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *       400:
+ *         description: Datos inválidos en la solicitud (por validación Zod)
+ *       401:
+ *         description: Token no válido o no proporcionado
+ *       404:
+ *         description: Envío no encontrado o sin estado asociado
+ *       500:
+ *         description: Error interno del servidor
+ */
+shipmentRouter.patch(
+  '/status',
+  authMiddleware,
+  validateRequest(UpdateShipmentStatusSchema),
+  updateShipmentStatusController
 )
 
 export default shipmentRouter
