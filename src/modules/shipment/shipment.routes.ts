@@ -14,7 +14,7 @@ const shipmentRouter = Router()
  * @swagger
  * /shipment:
  *   post:
- *     summary: Crear una orden de envío
+ *     summary: Create a shipment order
  *     tags: [Shipment]
  *     security:
  *       - bearerAuth: []
@@ -36,34 +36,34 @@ const shipmentRouter = Router()
  *               origin:
  *                 type: integer
  *                 example: 1
- *                 description: ID de la ciudad de origen
+ *                 description: Origin city ID
  *               destination:
  *                 type: integer
  *                 example: 2
- *                 description: ID de la ciudad de destino
+ *                 description: Destination city ID
  *               weight:
  *                 type: number
  *                 example: 2.5
- *                 description: Peso real del paquete (kg)
+ *                 description: Real weight of the package (kg)
  *               height:
  *                 type: number
  *                 example: 25
- *                 description: Altura del paquete (cm)
+ *                 description: Height of the package (cm)
  *               width:
  *                 type: number
  *                 example: 20
- *                 description: Ancho del paquete (cm)
+ *                 description: Width of the package (cm)
  *               length:
  *                 type: number
  *                 example: 30
- *                 description: Largo del paquete (cm)
+ *                 description: Length of the package (cm)
  *               price:
  *                 type: number
  *                 example: 18000
- *                 description: Precio cotizado del envío
+ *                 description: Quoted price of the shipment
  *     responses:
  *       201:
- *         description: Envío creado exitosamente
+ *         description: Shipment created successfully
  *         content:
  *           application/json:
  *             schema:
@@ -110,11 +110,11 @@ const shipmentRouter = Router()
  *                       type: string
  *                       format: date-time
  *       400:
- *         description: Error de validación o datos faltantes
+ *         description: Validation error or missing data
  *       401:
- *         description: Token no válido o no proporcionado
+ *         description: Invalid or missing token
  *       500:
- *         description: Error interno del servidor
+ *         description: Internal server error
  */
 shipmentRouter.post(
   '/',
@@ -127,7 +127,7 @@ shipmentRouter.post(
  * @swagger
  * /shipment/findAll/user/{userId}:
  *   get:
- *     summary: Obtener todos los envíos de un usuario
+ *     summary: Get all shipments for a user
  *     tags: [Shipment]
  *     security:
  *       - bearerAuth: []
@@ -138,10 +138,10 @@ shipmentRouter.post(
  *         schema:
  *           type: string
  *           format: uuid
- *         description: ID del usuario cuyos envíos se quieren consultar
+ *         description: ID of the user whose shipments are to be retrieved
  *     responses:
  *       200:
- *         description: Lista de envíos del usuario
+ *         description: List of user's shipments
  *         content:
  *           application/json:
  *             schema:
@@ -199,11 +199,11 @@ shipmentRouter.post(
  *                         type: string
  *                         format: date-time
  *       401:
- *         description: Token no válido o no proporcionado
+ *         description: Invalid or missing token
  *       404:
- *         description: Usuario no encontrado o sin envíos
+ *         description: User not found or no shipments available
  *       500:
- *         description: Error interno del servidor
+ *         description: Internal server error
  */
 shipmentRouter.get(
   '/findAll/user/:userId',
@@ -215,7 +215,7 @@ shipmentRouter.get(
  * @swagger
  * /shipment/status:
  *   patch:
- *     summary: Actualizar el estado de un envío
+ *     summary: Update a shipment status
  *     tags: [Shipment]
  *     security:
  *       - bearerAuth: []
@@ -233,15 +233,15 @@ shipmentRouter.get(
  *                 type: string
  *                 format: uuid
  *                 example: "ff666369-ee16-4332-a454-5e108dff0bea"
- *                 description: ID del envío que se desea actualizar
+ *                 description: ID of the shipment to be updated
  *               statusId:
  *                 type: integer
  *                 example: 2
  *                 enum: [1, 2, 3]
- *                 description: ID del nuevo estado (1 = En espera, 2 = En tránsito, 3 = Entregado)
+ *                 description: ID of the new status (1 = Pending, 2 = In transit, 3 = Delivered)
  *     responses:
  *       201:
- *         description: Estado actualizado correctamente
+ *         description: Status updated successfully
  *         content:
  *           application/json:
  *             schema:
@@ -251,13 +251,13 @@ shipmentRouter.get(
  *                   type: boolean
  *                   example: true
  *       400:
- *         description: Datos inválidos en la solicitud (por validación Zod)
+ *         description: Invalid request data (Zod validation errors)
  *       401:
- *         description: Token no válido o no proporcionado
+ *         description: Invalid or missing token
  *       404:
- *         description: Envío no encontrado o sin estado asociado
+ *         description: Shipment not found or no associated status
  *       500:
- *         description: Error interno del servidor
+ *         description: Internal server error
  */
 shipmentRouter.patch(
   '/status',

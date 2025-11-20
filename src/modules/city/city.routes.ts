@@ -7,12 +7,12 @@ const cityRouter = Router()
  * @swagger
  * /city/getAll:
  *   get:
- *     summary: Obtener todas las ciudades
+ *     summary: Get all cities
  *     tags: [City]
- *     description: Retorna un listado con todas las ciudades registradas en el sistema.
+ *     description: Returns a list of all cities registered in the system.
  *     responses:
  *       200:
- *         description: Listado de ciudades obtenido exitosamente
+ *         description: Successfully retrieved list of cities
  *         content:
  *           application/json:
  *             schema:
@@ -33,7 +33,7 @@ const cityRouter = Router()
  *                         type: string
  *                         example: Bogotá
  *       500:
- *         description: Error interno del servidor
+ *         description: Internal server error
  *         content:
  *           application/json:
  *             schema:

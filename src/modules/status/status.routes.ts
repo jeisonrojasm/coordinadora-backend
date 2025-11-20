@@ -7,11 +7,11 @@ const statusRouter = Router()
  * @swagger
  * /status/getAll:
  *   get:
- *     summary: Obtener todos los estados disponibles
+ *     summary: Get all available statuses
  *     tags: [Status]
  *     responses:
  *       200:
- *         description: Lista de estados disponibles
+ *         description: List of available statuses
  *         content:
  *           application/json:
  *             schema:
@@ -32,7 +32,7 @@ const statusRouter = Router()
  *                         type: string
  *                         example: "En espera"
  *       500:
- *         description: Error interno del servidor
+ *         description: Internal server error
  */
 statusRouter.get(
   '/getAll',
