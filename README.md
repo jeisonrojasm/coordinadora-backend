@@ -4,251 +4,252 @@
 
 # Coordinadora Backend
 
-API RESTful para la gestión de cotizaciones y envíos en tiempo real.
+RESTful API built with Express and TypeScript for quoting, registering, and tracking shipments. The API leverages PostgreSQL for data storage, Redis for caching, and JWT for secure authentication. Data is validated safely, and interactive documentation is provided through Swagger. Shipment statuses can be tracked in real time thanks to WebSocket integration, enabling seamless communication between the backend and frontend.
 
-## 🛠️ Construido con
+## 🛠️ Built with
 
 - Node.js + Express
 - TypeScript
 - PostgreSQL
 - Redis
-- JWT para autenticación
-- Swagger para documentación
+- JWT for authentication
+- Swagger for documentation
 - Docker
 - Zod
 - Jest
 
-## ✅ Prerrequisitos
+## ✅ Prerequisites
 
-Antes de comenzar, asegúrate de tener instalado lo siguiente:
+Before getting started, make sure you have the following installed:
 
 - ✅ [*Git*](https://git-scm.com/)
-- ✅ [*Docker* y Docker Compose](https://www.docker.com/get-started) instalados y en ejecución
+- ✅ [*Docker* y Docker Compose](https://www.docker.com/get-started) installed and running
 
-## 📥 Obtener el proyecto
+## 📥 Get the project
 
-Clona el repositorio:
+Clone the repository:
 
 ```bash
-#Clona el repositorio
+#Clone the repository:
 git clone https://github.com/jeisonrojasm/coordinadora-backend.git
 cd coordinadora-backend
 ```
 
-## 📁 Estructura del Proyecto
+## 📁 Project Structure
 
-La estructura del proyecto está organizada para mantener una clara separación de responsabilidades, facilitando el mantenimiento y la escalabilidad.
+The project structure is organized to maintain a clear separation of responsibilities, making the application easier to maintain and scale.
 
 ```bash
 coordinadora-backend/
-├── db/                     # Archivos de migración SQL (usados por dbmate)
-│   └── migrations/         # Migraciones con timestamp
-├── src/                    # Código fuente de la aplicación
-│   ├── config/             # Configuraciones generales (Redis, DB, dotenv)
-│   ├── middlewares/        # Middlewares personalizados (auth, validaciones, manejo de errores)
-│   ├── modules/            # Módulos principales divididos por dominio
-│   │   ├── auth/           # Registro e inicio de sesión
-│   │   ├── quote/          # Cotización de envíos
-│   │   ├── shipment/       # Creación y seguimiento de envíos
-│   │   └── ...             # Otros módulos futuros
-│   └── utils/              # Utilidades usadas a lo largo de toda la app
-├── .env                    # Variables de entorno (no versionado)
-├── .gitignore              # Excluye archivos o carpetas que no deben subirse al repositorio
-├── docker-compose.yml      # Orquestación de servicios con Docker
-├── Dockerfile              # Imagen de backend con Node.js
-├── package.json            # Dependencias y scripts
-├── README.md               # Documentación del proyecto
-└── tsconfig.json           # Configuración de TypeScript
+├── db/                     # SQL migration files (used by dbmate)
+│   └── migrations/         # Timestamped migrations
+├── src/                    # Application source code
+│   ├── config/             # General configurations (Redis, DB, dotenv)
+│   ├── middlewares/        # Custom middlewares (auth, validations, error handling)
+│   ├── modules/            # Main modules divided by domain
+│   │   ├── auth/           # Sign up and log in
+│   │   ├── quote/          # Shipping quote
+│   │   ├── shipment/       # Shipment creation and tracking
+│   │   └── ...             # Other future modules
+│   └── utils/              # Utilities used throughout the entire app
+├── .env                    # Environment variables (not versioned)
+├── .gitignore              # Excludes files or folders that should not be uploaded to the repository
+├── docker-compose.yml      # Service orchestration with Docker
+├── Dockerfile              # Backend image with Node.js
+├── package.json            # Dependencies and scripts
+├── README.md               # Project documentation
+└── tsconfig.json           # TypeScript configuration
 ```
 
-### Estructura Modular
+### Modular Structure
 
-Cada módulo dentro de `src/modules` sigue el siguiente patrón:
+Each module inside `src/modules` follows the following pattern:
 
 ```bash
 module/
-├── module.controller.ts    # Controlador HTTP
-├── module.repository.ts    # Consultas a base de datos
-├── module.routes.ts        # Endpoints del módulo
-├── module.service.spec.ts  # Pruebas unitarias del módulo
-├── module.service.ts       # Lógica de negocio
-├── module.validation.ts    # Validaciones con Zod
+├── module.controller.ts    # HTTP controller
+├── module.repository.ts    # Database queries
+├── module.routes.ts        # Module endpoints
+├── module.service.spec.ts  # Module unit tests
+├── module.service.ts       # Business logic
+├── module.validation.ts    # Validations with Zod
 ```
 
-## 🚀 Ejecutar
+## 🚀 Run
 
-### 1. **Archivo `.env` requerido**
+### 1. **`.env` file required**
 
-El archivo `.env` contiene variables sensibles necesarias para ejecutar el proyecto (como credenciales, tokens y URLs de servicios).
-Por motivos de seguridad **no está incluido en el repositorio**.
+Normally, the `.env` file **should not be included** in a public repository, as it may contain sensitive configuration values.
+However, for demonstration and evaluation purposes —and because this is not a production project— the `.env` file is included in the repository so anyone can run the project without additional setup.
 
-> 🔐 **En el correo que te llegó encontrarás el archivo `.env` necesario para que la ejecución del backend funcione correctamente.**
+You will find the `.env` file already placed in the root of the project.
 
-Una vez lo tengas, colócalo en la raíz del proyecto.
+### 2. Set up the development environment with Docker
 
-### 2. Levantar el entorno de desarrollo con Docker
-
-Como esta aplicación está completamente dockerizada, no es necesario instalar Node.js ni dependencias manualmente en tu equipo. Basta con ejecutar el siguiente comando desde la raíz del proyecto para construir la imagen y levantar el contenedor del backend:
+Since this application is fully dockerized, there is no need to manually install Node.js or dependencies on your machine. Simply run the following command from the project root to build the image and start the backend container:
 
 ```bash
 docker-compose up --build
 ```
 
-Este comando realizará las siguientes acciones:
+This command will perform the following actions:
 
-- Construirá la imagen de Docker definida en el `Dockerfile`, utilizando `node:20-alpine` como base.
-- Instalará automáticamente todas las dependencias declaradas en el `package.json`.
-- Montará el código fuente de tu máquina dentro del contenedor, lo que permite ver los cambios en tiempo real.
-- Iniciará el servidor de desarrollo con `ts-node-dev`, lo que habilita el hot-reload automático ante cualquier cambio en los archivos `.ts`.
+- It will build the Docker image defined in the `Dockerfile`, using `node:20-alpine` as the base.
+- It will automatically install all dependencies declared in the `package.json`.
+- It will mount the source code from your machine into the container, allowing you to see changes in real time.
+- It will start the development server with `ts-node-dev`, enabling automatic hot-reload whenever any `.ts` files change.
 
-Una vez finalizado el proceso, el backend quedará disponible en:
+Once the process is complete, the backend will be available at:
 
 ```arduino
 http://localhost:3000
 ```
 
-### 3. Conectarse a pgadmin
+### 3. Connect to pgAdmin
 
-La base de datos PostgreSQL y la herramienta de administración pgAdmin están también dockerizadas, por lo que no es necesario instalarlas localmente.
+The PostgreSQL database and the pgAdmin administration tool are also dockerized, so there is no need to install them locally.
 
-Para acceder a pgAdmin y visualizar la base de datos:
+To access pgAdmin and view the database:
 
-1. Abre tu navegador y visita la siguiente URL:
+1. Open your browser and visit the following URL:
 
    ```bash
    http://localhost:8080
    ```
 
-2. Inicia sesión con las credenciales definidas en tu archivo `.env`:
+2. Log in using the credentials defined in your `.env` file:
 
    ```bash
    PGADMIN_DEFAULT_EMAIL
    PGADMIN_DEFAULT_PASSWORD
    ```
 
-3. Una vez dentro del panel de pgAdmin:
-   - Haz clic derecho sobre la sección **Servers** (barra lateral izquierda).
-   - Selecciona **Register** > **Server**.
+3. Once inside the pgAdmin dashboard:
+   - Right-click on the **Servers** section (left sidebar).
+   - Select **Register** > **Server**.
 
-4. En el formulario de configuración:
+4. In the configuration form:
 
-   🧾 **Pestaña General**
-   - **Name**: Escribe un nombre descriptivo, por ejemplo: `Coordinadora DB`.
+   🧾 **General tab**
+   - **Name**: Enter a descriptive name, for example: `Coordinadora DB`.
 
-   🔌 **Pestaña Connection**
-   - **Host name/address**: Definido en la variable `DB_HOST` del `.env`
-   - **Port**: Definido en la variable `DB_PORT` del `.env`
-   - **Username**: Definido en la variable `DB_USER` del `.env`
-   - **Password**: Definido en la variable `DB_PASSWORD` del `.env`
-   - Opcional: Marca la casilla *Save password* para no tener que ingresarla cada vez.
+   🔌 **Connection tab**
+   - **Host name/address**: Defined in the `DB_HOST` variable of the `.env` file
+   - **Port**: Defined in the `DB_PORT` variable of the `.env` file
+   - **Username**: Defined in the `DB_USER` variable of the `.env` file
+   - **Password**: Defined in the `DB_PASSWORD` variable of the `.env` file
+   - Optional: Check the *Save password* box to avoid entering it each time.
   
-5. Haz clic en **Save** para guardar la configuración y conectar.
+5. Click **Save** to save the configuration and connect.
 
-   Una vez creada la conexión, podrás navegar por las bases de datos, ver tablas, ejecutar queries y gestionar los datos desde la interfaz de pgAdmin.
+   Once the connection is created, you can browse the databases, view tables, run queries, and manage data from the pgAdmin interface.
 
-### 4. Migraciones automáticas de la base de datos
+### 4. Automatic database migrations
 
-Este proyecto utiliza **dbmate** como herramienta para gestionar migraciones de base de datos utilizando SQL puro, lo cual cumple con el requerimiento explícito de evitar ORMs.
+This project uses **dbmate** as a tool to manage database migrations using pure SQL, which meets the explicit requirement to avoid ORMs.
 
-🛠️ ¿Qué significa esto?
+🛠️ What does this mean?
 
-- No necesitas conectarte a pgAdmin ni crear las tablas manualmente.
-- Al levantar los contenedores con Docker, las tablas necesarias se crean automáticamente en la base de datos PostgreSQL si no existen aún.
+- You don’t need to connect to pgAdmin or create the tables manually.
+- When starting the containers with Docker, the necessary tables are automatically created in the PostgreSQL database if they do not already exist.
 
-📦 ¿Cómo funciona?
+📦 How does it work?
 
-- El archivo `docker-compose.yml` define un servicio adicional llamado `dbmate`, que se encarga de aplicar las migraciones una vez que PostgreSQL está listo.
-- Este servicio utiliza la herramienta `dbmate` para buscar y aplicar todos los archivos `.sql` de migración ubicados en:
+- The `docker-compose.yml` file defines an additional service called `dbmate`, which is responsible for applying the migrations once PostgreSQL is ready.
+- This service uses the `dbmate` tool to find and apply all migration `.sql` files located in:
 
 ```bash
 ./db/migrations/
 ```
 
-Cada archivo de migración tiene un nombre con marca de tiempo para garantizar el orden de ejecución, por ejemplo:
+Each migration file has a timestamped name to ensure the execution order, for example:
 
 ```bash
 20240627150000_create_users_table.sql
 ```
 
-Esto garantiza que cualquier persona que clone el proyecto y ejecute:
+This ensures that anyone who clones the project and runs:
 
 ```bash
 docker-compose up --build
 ```
 
-Tendrá automáticamente la base de datos con todas las tablas necesarias sin necesidad de configuraciones adicionales.
+Will automatically have the database with all the necessary tables without any additional configuration.
 
-## ✅ Aplicación lista para usarse
+## ✅ Application ready to use
 
-Una vez completados los pasos anteriores:
+Once the previous steps are completed:
 
-- El servidor backend estará corriendo en `http://localhost:3000`.
-- La base de datos PostgreSQL estará lista y migrada.
-- Podrás consumir los endpoints REST definidos.
-- Tendrás acceso a pgAdmin para gestionar tus datos gráficamente.
-- Redis estará disponible para almacenamiento en caché.
-- Y la documentación interactiva estará disponible en Swagger (si ya configuraste el endpoint `/api-docs`).
+- The backend server will be running at `http://localhost:3000`.
+- The PostgreSQL database will be ready and migrated.
+- You will be able to consume the defined REST endpoints.
+- You will have access to pgAdmin to manage your data through a graphical interface.
+- Redis will be available for caching.
+- And the interactive documentation will be available in Swagger (if you have already set up the `/api-docs` endpoint).
 
-> 🧪 Puedes ahora probar los endpoints usando **Postman** o cualquier cliente HTTP como **Insomnia**, y empezar a construir el frontend o integraciones que necesites.
+> 🧪 You can now test the endpoints using **Postman** or any HTTP client like **Insomnia**, and start building the frontend or any integrations you need.
 
-## 📚 Documentación con Swagger
+## 📚 Swagger documentation
 
-Esta API cuenta con documentación interactiva generada automáticamente con Swagger gracias a la integración con `swagger-jsdoc` y `swagger-ui-express`.
+This API features interactive documentation automatically generated with Swagger, thanks to the integration with `swagger-jsdoc` and `swagger-ui-express`.
 
-### ¿Qué puedes hacer desde Swagger?
+### What can you do from Swagger?
 
-- Ver todos los endpoints disponibles (GET, POST, PATCH, etc.)
-- Consultar ejemplos de request y response.
-- Ver los esquemas de validación definidos con Zod.
-- Probar los endpoints directamente desde el navegador (requiere autenticación con JWT en los endpoints protegidos)..
+- View all available endpoints (GET, POST, PATCH, etc.)
+- View request and response examples.
+- View the validation schemas defined with Zod.
+- Test the endpoints directly from the browser (requires JWT authentication for protected endpoints).
 
-### Acceder a la documentación
+### Access the documentation
 
-Una vez que el backend esté corriendo, puedes acceder a Swagger en:
+Once the backend is running, you can access Swagger at:
 
 ```bash
 http://localhost:3000/api-docs
 ```
 
-### Autenticación con JWT en Swagger
+### JWT authentication in Swagger
 
-1. Primero, haz una solicitud de login con un usuario válido para obtener un token.
-2. En Swagger, haz clic en el botón **Authorize** (🔒) ubicado en la parte superior derecha.
-3. Ingresa el token.
-4. Una vez autenticado, podrás probar todos los endpoints protegidos sin necesidad de usar Postman o herramientas externas.
+1. First, make a login request with a valid user to obtain a token.
+2. In Swagger, click the **Authorize** button (🔒)located at the top right.
+3. Enter the token.
+4. Once authenticated, you can test all protected endpoints without needing Postman or any external tools.
 
-## 🧪 Pruebas automatizadas
+## 🧪 Automated tests
 
-Este proyecto incluye un conjunto de pruebas unitarias escritas con [Jest](https://jestjs.io/) para asegurar el correcto funcionamiento de los servicios y controladores principales.
+This project includes a set of unit tests written with [Jest](https://jestjs.io/) to ensure the proper functioning of the main services and controllers.
 
-### Estructura de pruebas
+### Test structure
 
-Las pruebas están organizadas siguiendo la misma estructura que los módulos de negocio:
+The tests are organized following the same structure as the business modules:
 
 ```bash
 src/
 ├── modules/
 │   ├── auth/
 │   │   ├── auth.service.ts
-│   │   ├── auth.service.spec.ts   👈 Pruebas del módulo de autenticación
+│   │   ├── auth.service.spec.ts   👈 Authentication module tests
 │   ├── quote/
 │   │   ├── quote.service.ts
-│   │   ├── quote.service.spec.ts  👈 Pruebas del cálculo de cotizaciones
+│   │   ├── quote.service.spec.ts  👈 Shipping quote calculation tests
 │   ├── shipment/
 │   │   ├── shipment.service.ts
-│   │   ├── shipment.service.spec.ts 👈 Pruebas del registro de envíos
+│   │   ├── shipment.service.spec.ts 👈 Shipment registration tests
 ```
 
-Cada archivo `*.spec.ts` contiene pruebas para el servicio correspondiente, simulando dependencias con `jest.mock()` y `jest.spyOn()`.
+Each `*.spec.ts` file contains tests for the corresponding service, mocking dependencies with `jest.mock()` and `jest.spyOn()`.
 
-### Ejecutar los tests
+### Run the tests
 
-Puedes ejecutar todos los tests con:
+You can run all the tests with:
 
 ```bash
 npm run test
 ```
 
-## 👨‍💻 Autor
+## 👨‍💻 Author
 
-Desarrollado por **Jeison Rojas** - *Desarrollador Fullstack* - [jeisonrojasm](https://github.com/jeisonrojasm)
+Developed by **Jeison Rojas Mora** - *Fullstack Developer*
+
+- [https://github.com/jeisonrojasm](https://github.com/jeisonrojasm)
+- [https://www.linkedin.com/in/jeison-rojas-mora/](https://www.linkedin.com/in/jeison-rojas-mora/)
