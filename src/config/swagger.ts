@@ -6,9 +6,9 @@ const options: swaggerJsdoc.Options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'API de Coordinadora',
+      title: 'Coordinadora API',
       version: '1.0.0',
-      description: 'Documentación de endpoints con Swagger',
+      description: 'Endpoints documentation with Swagger',
     },
     components: {
       securitySchemes: {

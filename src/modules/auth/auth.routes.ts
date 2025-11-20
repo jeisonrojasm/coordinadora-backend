@@ -9,7 +9,7 @@ const authRouter = Router()
  * @swagger
  * /auth/register:
  *   post:
- *     summary: Registro de un nuevo usuario
+ *     summary: Register a new user
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -37,7 +37,7 @@ const authRouter = Router()
  *                 example: Pass123*
  *     responses:
  *       201:
- *         description: Usuario creado exitosamente
+ *         description: User created successfully
  *         content:
  *           application/json:
  *             schema:
@@ -62,7 +62,7 @@ const authRouter = Router()
  *                       type: string
  *                       example: jeison@example.com
  *       400:
- *         description: El usuario ya existe o hay errores de validación
+ *         description: User already exists or validation errors
  */
 authRouter.post(
   '/register',
@@ -74,7 +74,7 @@ authRouter.post(
  * @swagger
  * /auth/login:
  *   post:
- *     summary: Login de usuario
+ *     summary: User login
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -94,7 +94,7 @@ authRouter.post(
  *                 example: Pass123*
  *     responses:
  *       200:
- *         description: Login exitoso
+ *         description: Successful login
  *         content:
  *           application/json:
  *             schema:
@@ -125,9 +125,9 @@ authRouter.post(
  *                           type: string
  *                           example: jeison@example.com
  *       401:
- *         description: Credenciales incorrectas
+ *         description: Incorrect credentials
  *       429:
- *         description: Se superó la máxima cantidad de intentos de inicio de sesión fallidos
+ *         description: Maximum number of failed login attempts exceeded
   *         content:
  *           application/json:
  *             schema:
